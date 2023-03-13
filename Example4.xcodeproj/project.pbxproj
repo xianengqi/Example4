@@ -13,6 +13,13 @@
 		C341FF3029BF5222005A87C1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C341FF2F29BF5222005A87C1 /* Preview Assets.xcassets */; };
 		C341FF3229BF5222005A87C1 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF3129BF5222005A87C1 /* Persistence.swift */; };
 		C341FF3529BF5222005A87C1 /* Example4.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C341FF3329BF5222005A87C1 /* Example4.xcdatamodeld */; };
+		C341FF3F29BF55F7005A87C1 /* Spu+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF3B29BF55F7005A87C1 /* Spu+CoreDataClass.swift */; };
+		C341FF4029BF55F7005A87C1 /* Spu+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF3C29BF55F7005A87C1 /* Spu+CoreDataProperties.swift */; };
+		C341FF4129BF55F7005A87C1 /* Sku+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF3D29BF55F7005A87C1 /* Sku+CoreDataClass.swift */; };
+		C341FF4229BF55F7005A87C1 /* Sku+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF3E29BF55F7005A87C1 /* Sku+CoreDataProperties.swift */; };
+		C341FF4429BF56E0005A87C1 /* SkuDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4329BF56E0005A87C1 /* SkuDetailView.swift */; };
+		C341FF4629BF5719005A87C1 /* SpuDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4529BF5719005A87C1 /* SpuDetail.swift */; };
+		C341FF4829BF5CC9005A87C1 /* SkuExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4729BF5CC9005A87C1 /* SkuExample.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +30,13 @@
 		C341FF2F29BF5222005A87C1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C341FF3129BF5222005A87C1 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		C341FF3429BF5222005A87C1 /* Example4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Example4.xcdatamodel; sourceTree = "<group>"; };
+		C341FF3B29BF55F7005A87C1 /* Spu+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Spu+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		C341FF3C29BF55F7005A87C1 /* Spu+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Spu+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		C341FF3D29BF55F7005A87C1 /* Sku+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sku+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		C341FF3E29BF55F7005A87C1 /* Sku+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sku+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		C341FF4329BF56E0005A87C1 /* SkuDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkuDetailView.swift; sourceTree = "<group>"; };
+		C341FF4529BF5719005A87C1 /* SpuDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpuDetail.swift; sourceTree = "<group>"; };
+		C341FF4729BF5CC9005A87C1 /* SkuExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkuExample.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +69,13 @@
 		C341FF2729BF5221005A87C1 /* Example4 */ = {
 			isa = PBXGroup;
 			children = (
+				C341FF3B29BF55F7005A87C1 /* Spu+CoreDataClass.swift */,
+				C341FF3C29BF55F7005A87C1 /* Spu+CoreDataProperties.swift */,
+				C341FF3D29BF55F7005A87C1 /* Sku+CoreDataClass.swift */,
+				C341FF3E29BF55F7005A87C1 /* Sku+CoreDataProperties.swift */,
+				C341FF4329BF56E0005A87C1 /* SkuDetailView.swift */,
+				C341FF4729BF5CC9005A87C1 /* SkuExample.swift */,
+				C341FF4529BF5719005A87C1 /* SpuDetail.swift */,
 				C341FF2829BF5221005A87C1 /* Example4App.swift */,
 				C341FF2A29BF5221005A87C1 /* ContentView.swift */,
 				C341FF2C29BF5222005A87C1 /* Assets.xcassets */,
@@ -143,8 +164,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C341FF4029BF55F7005A87C1 /* Spu+CoreDataProperties.swift in Sources */,
+				C341FF4629BF5719005A87C1 /* SpuDetail.swift in Sources */,
 				C341FF3229BF5222005A87C1 /* Persistence.swift in Sources */,
+				C341FF4129BF55F7005A87C1 /* Sku+CoreDataClass.swift in Sources */,
+				C341FF3F29BF55F7005A87C1 /* Spu+CoreDataClass.swift in Sources */,
 				C341FF3529BF5222005A87C1 /* Example4.xcdatamodeld in Sources */,
+				C341FF4829BF5CC9005A87C1 /* SkuExample.swift in Sources */,
+				C341FF4429BF56E0005A87C1 /* SkuDetailView.swift in Sources */,
+				C341FF4229BF55F7005A87C1 /* Sku+CoreDataProperties.swift in Sources */,
 				C341FF2B29BF5221005A87C1 /* ContentView.swift in Sources */,
 				C341FF2929BF5221005A87C1 /* Example4App.swift in Sources */,
 			);

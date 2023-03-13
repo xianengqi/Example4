@@ -1,88 +1,69 @@
-//
-//  ContentView.swift
-//  Example4
-//
-//  Created by 夏能啟 on 2023/3/13.
-//
-
-import SwiftUI
 import CoreData
+import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+  @Environment(\.managedObjectContext) private var viewContext
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
+  @FetchRequest(
+    sortDescriptors: [NSSortDescriptor(keyPath: \Spu.name, ascending: true)],
+    animation: .default
+  )
+  private var spus: FetchedResults<Spu>
 
-    var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-            Text("Select an item")
+  @State private var showAddSpuSheet = false
+
+  var body: some View {
+    NavigationView {
+      List {
+        ForEach(spus) { spu in
+          NavigationLink(destination: SpuDetail(spu: spu)) {
+            Text(spu.name ?? "")
+          }
         }
-    }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+        Button(action: {
+          showAddSpuSheet = true
+        }) {
+          Label("添加商品", systemImage: "plus")
         }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+        .sheet(isPresented: $showAddSpuSheet) {
+          AddSpuSheet()
+            .environment(\.managedObjectContext, viewContext)
         }
+      }
+      .navigationTitle("商品库存")
+      .toolbar {
+        EditButton()
+      }
     }
+  }
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
+struct AddSpuSheet: View {
+  @Environment(\.managedObjectContext) private var viewContext
+  @Environment(\.presentationMode) private var presentationMode
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+  @State private var name = ""
+
+  var body: some View {
+    NavigationView {
+      Form {
+        TextField("名称", text: $name)
+      }
+      .navigationTitle("添加商品")
+      .navigationBarItems(
+        leading: Button("取消") {
+          presentationMode.wrappedValue.dismiss()
+        },
+        trailing: Button("保存") {
+          let newSpu = Spu(context: viewContext)
+          newSpu.name = name
+
+          try? viewContext.save()
+          presentationMode.wrappedValue.dismiss()
+        }
+        .disabled(name.isEmpty)
+      )
     }
+  }
 }

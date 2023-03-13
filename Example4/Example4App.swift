@@ -14,6 +14,7 @@ struct Example4App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+//          SpuDetail()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
