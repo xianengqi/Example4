@@ -20,14 +20,24 @@ struct SpuDetail: View {
 
       Section(header: Text("商品SKU")) {
         ForEach(spu.skus?.allObjects as? [Sku] ?? []) { sku in
-          NavigationLink(destination: SkuDetailView(sku: sku)) {
-            VStack(alignment: .leading) {
-              Text("\(sku.color ?? "") \(sku.size ?? "")")
-              Text("库存哈: \(sku.stock)")
-                .font(.caption)
-                .foregroundColor(.secondary)
-            }
+          VStack(alignment: .leading) {
+//              Text("\(sku.color ?? "") \(sku.size ?? "")")
+            Text("\(sku.colorArray.map { "\($0)" }.joined(separator: ", ")) \(sku.sizeArray.map { "\($0)" }.joined(separator: ", "))")
+
+            Text("库存: \(sku.stock)")
+              .font(.caption)
+              .foregroundColor(.secondary)
           }
+//          NavigationLink(destination: SkuDetailView(sku: sku)) {
+//            VStack(alignment: .leading) {
+////              Text("\(sku.color ?? "") \(sku.size ?? "")")
+//              Text("\(sku.colorArray.map { "\($0)" }.joined(separator: ", ")) \(sku.size ?? "")")
+//
+//              Text("库存: \(sku.stock)")
+//                .font(.caption)
+//                .foregroundColor(.secondary)
+//            }
+//          }
         }
 
         Button(action: {
@@ -41,6 +51,12 @@ struct SpuDetail: View {
         .sheet(isPresented: $showAddSkuSheet) {
           AddSkuSheet(spu: spu)
             .environment(\.managedObjectContext, viewContext)
+            .presentationDetents(
+              [.medium])
+            .presentationBackground(.ultraThinMaterial)
+            .presentationDragIndicator(.hidden)
+            .presentationCornerRadius(20)
+            .presentationContentInteraction(.scrolls)
         }
       }
     }
@@ -60,6 +76,14 @@ struct AddSkuSheet: View {
 
   @ObservedObject var spu: Spu
 
+  @State private var selectedColors: [String] = []
+  @State private var selectedSizes: [String] = []
+  @State var showColor = false
+  @State var showSize = false
+  @State private var isSaved = false
+  @State private var linkDetail = false
+  @Environment(\.dismiss) private var dismiss
+
   @State private var color = ""
   @State private var size = ""
   @State private var price = ""
@@ -67,13 +91,27 @@ struct AddSkuSheet: View {
 
   var body: some View {
     NavigationView {
-      Form {
-        TextField("颜色", text: $color)
-        TextField("尺码", text: $size)
-        TextField("价格", text: $price)
-          .keyboardType(.decimalPad)
-        TextField("库存", text: $stock)
-          .keyboardType(.numberPad)
+      VStack {
+//        TextField("尺码", text: $size)
+        VStack(spacing: 10) {
+//          TextField("颜色", text: $color)
+          formColorView().frame(height: 20)
+          
+          Divider()
+          formSizeView().frame(height: 20)
+          Divider()
+          TextField("价格", text: $price)
+            .keyboardType(.decimalPad)
+          Divider()
+          TextField("库存", text: $stock)
+            .keyboardType(.numberPad)
+          Divider()
+          Spacer()
+        }
+        .padding()
+        .frame(height: 300)
+        .background(Color.white)
+        Spacer()
       }
       .navigationTitle("添加SKU")
       .navigationBarItems(
@@ -81,13 +119,23 @@ struct AddSkuSheet: View {
           presentationMode.wrappedValue.dismiss()
         },
         trailing: Button("保存") {
+          // 判断输入是否为空或已存在
+          if selectedColors.isEmpty || selectedSizes.isEmpty || price.isEmpty || stock.isEmpty {
+            return
+          }
+
+          
+          
           let newSku = Sku(context: viewContext)
-          newSku.color = color
-          newSku.size = size
+//          newSku.color = color
+//          newSku.size = size
+          newSku.colorArray = selectedColors
+          newSku.sizeArray = selectedSizes
+          
           newSku.price = Double(price) ?? 0
           newSku.stock = Int16(stock) ?? 0
           newSku.spu = spu
-          newSku.sizes = spu.skus?.compactMap { ($0 as? Sku)?.size } ?? []
+//          newSku.sizes = spu.skus?.compactMap { ($0 as? Sku)?.size } ?? []
 
           spu.addSku(newSku)
 
@@ -95,8 +143,112 @@ struct AddSkuSheet: View {
 //          spu.objectWillChange.send() // force view refresh
           presentationMode.wrappedValue.dismiss()
         }
-        .disabled(color.isEmpty || size.isEmpty || price.isEmpty || stock.isEmpty)
-      )
+        .disabled(selectedColors.isEmpty || selectedSizes.isEmpty || price.isEmpty || stock.isEmpty))
+    }
+  }
+
+  @ViewBuilder
+  func formColorView() -> some View {
+    HStack {
+      Color.clear.overlay {
+        Text("颜色")
+          .foregroundColor(.black)
+          .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      .frame(width: 40)
+
+      Color.clear.overlay {
+        Text(selectedColors.isEmpty ? "选择颜色" : "\(selectedColors.joined(separator: ", "))")
+          .foregroundColor(.black)
+          .opacity(0.7)
+          .frame(maxWidth: .infinity, alignment: .center)
+      }
+
+      Color.clear.overlay {
+        Image(systemName: "chevron.right")
+          .foregroundColor(.black)
+          .opacity(0.7)
+          .frame(maxWidth: .infinity, alignment: .trailing)
+      }.frame(width: 10)
+    }
+    // 整行点击状态
+    .contentShape(Rectangle())
+
+    .onTapGesture {
+      print("点击弹出Sheet")
+      // 在打开Sheet之前先将已选中的颜色状态清空
+      selectedColors = []
+      showColor = true
+//      let isSelected = selectedColors.contains(color.colors)
+//      isSelected = false
+      // 清空选中的颜色状态
+//      selectedColors.removeAll()
+    }
+
+    .sheet(isPresented: $showColor) {
+      ColorExample(selectedColors: $selectedColors)
+        .onAppear {
+          // 清空选中的颜色状态
+
+          selectedColors.removeAll()
+          // 把 isSelected状态设置为flase
+        }
+//        .environment(\.managedObjectContext, viewContext)
+        .presentationDetents(
+          [.medium])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationDragIndicator(.hidden)
+        .presentationCornerRadius(20)
+        .presentationContentInteraction(.scrolls)
+    }
+
+    
+  }
+
+  @ViewBuilder
+  func formSizeView() -> some View {
+    HStack {
+      Color.clear.overlay {
+        Text("尺码")
+          .foregroundColor(.black)
+          .frame(maxWidth: .infinity, alignment: .leading)
+      }.frame(width: 40)
+
+      Color.clear.overlay {
+        Text(selectedSizes.isEmpty ? "选择尺码" : "\(selectedSizes.joined(separator: ", "))")
+          .foregroundColor(.black)
+          .opacity(0.7)
+          .frame(maxWidth: .infinity, alignment: .center)
+      }
+
+      Color.clear.overlay {
+        Image(systemName: "chevron.right")
+          .foregroundColor(.black)
+          .opacity(0.7)
+          .frame(maxWidth: .infinity, alignment: .trailing)
+      }.frame(width: 10)
+    }
+    // 整行点击状态
+    .contentShape(Rectangle())
+
+    .onTapGesture {
+      showSize = true
+    }
+
+    .sheet(isPresented: $showSize) {
+      SizeExample(selectedColors: $selectedSizes)
+        .onAppear {
+          // 清空选中的颜色状态
+
+          selectedSizes.removeAll()
+          // 把 isSelected状态设置为flase
+        }
+        .presentationDetents(
+          [.medium])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationDragIndicator(.hidden)
+        .presentationCornerRadius(20)
+        .presentationContentInteraction(.scrolls)
     }
   }
 }

@@ -19,7 +19,9 @@
 		C341FF4229BF55F7005A87C1 /* Sku+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF3E29BF55F7005A87C1 /* Sku+CoreDataProperties.swift */; };
 		C341FF4429BF56E0005A87C1 /* SkuDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4329BF56E0005A87C1 /* SkuDetailView.swift */; };
 		C341FF4629BF5719005A87C1 /* SpuDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4529BF5719005A87C1 /* SpuDetail.swift */; };
-		C341FF4829BF5CC9005A87C1 /* SkuExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4729BF5CC9005A87C1 /* SkuExample.swift */; };
+		C341FF4A29C09858005A87C1 /* SizeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4929C09858005A87C1 /* SizeExample.swift */; };
+		C341FF4D29C09B3B005A87C1 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = C341FF4C29C09B3B005A87C1 /* Flow */; };
+		C341FF4F29C0A544005A87C1 /* ColorExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C341FF4E29C0A544005A87C1 /* ColorExample.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,7 +38,8 @@
 		C341FF3E29BF55F7005A87C1 /* Sku+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sku+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		C341FF4329BF56E0005A87C1 /* SkuDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkuDetailView.swift; sourceTree = "<group>"; };
 		C341FF4529BF5719005A87C1 /* SpuDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpuDetail.swift; sourceTree = "<group>"; };
-		C341FF4729BF5CC9005A87C1 /* SkuExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkuExample.swift; sourceTree = "<group>"; };
+		C341FF4929C09858005A87C1 /* SizeExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeExample.swift; sourceTree = "<group>"; };
+		C341FF4E29C0A544005A87C1 /* ColorExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExample.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C341FF4D29C09B3B005A87C1 /* Flow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +78,7 @@
 				C341FF3D29BF55F7005A87C1 /* Sku+CoreDataClass.swift */,
 				C341FF3E29BF55F7005A87C1 /* Sku+CoreDataProperties.swift */,
 				C341FF4329BF56E0005A87C1 /* SkuDetailView.swift */,
-				C341FF4729BF5CC9005A87C1 /* SkuExample.swift */,
+				C341FF5029C0A603005A87C1 /* Selection */,
 				C341FF4529BF5719005A87C1 /* SpuDetail.swift */,
 				C341FF2829BF5221005A87C1 /* Example4App.swift */,
 				C341FF2A29BF5221005A87C1 /* ContentView.swift */,
@@ -94,6 +98,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		C341FF5029C0A603005A87C1 /* Selection */ = {
+			isa = PBXGroup;
+			children = (
+				C341FF4929C09858005A87C1 /* SizeExample.swift */,
+				C341FF4E29C0A544005A87C1 /* ColorExample.swift */,
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -110,6 +123,9 @@
 			dependencies = (
 			);
 			name = Example4;
+			packageProductDependencies = (
+				C341FF4C29C09B3B005A87C1 /* Flow */,
+			);
 			productName = Example4;
 			productReference = C341FF2529BF5221005A87C1 /* Example4.app */;
 			productType = "com.apple.product-type.application";
@@ -138,6 +154,9 @@
 				Base,
 			);
 			mainGroup = C341FF1C29BF5221005A87C1;
+			packageReferences = (
+				C341FF4B29C09B3B005A87C1 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */,
+			);
 			productRefGroup = C341FF2629BF5221005A87C1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -168,9 +187,10 @@
 				C341FF4629BF5719005A87C1 /* SpuDetail.swift in Sources */,
 				C341FF3229BF5222005A87C1 /* Persistence.swift in Sources */,
 				C341FF4129BF55F7005A87C1 /* Sku+CoreDataClass.swift in Sources */,
+				C341FF4F29C0A544005A87C1 /* ColorExample.swift in Sources */,
+				C341FF4A29C09858005A87C1 /* SizeExample.swift in Sources */,
 				C341FF3F29BF55F7005A87C1 /* Spu+CoreDataClass.swift in Sources */,
 				C341FF3529BF5222005A87C1 /* Example4.xcdatamodeld in Sources */,
-				C341FF4829BF5CC9005A87C1 /* SkuExample.swift in Sources */,
 				C341FF4429BF56E0005A87C1 /* SkuDetailView.swift in Sources */,
 				C341FF4229BF55F7005A87C1 /* Sku+CoreDataProperties.swift in Sources */,
 				C341FF2B29BF5221005A87C1 /* ContentView.swift in Sources */,
@@ -375,6 +395,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C341FF4B29C09B3B005A87C1 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tevelee/SwiftUI-Flow.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C341FF4C29C09B3B005A87C1 /* Flow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C341FF4B29C09B3B005A87C1 /* XCRemoteSwiftPackageReference "SwiftUI-Flow" */;
+			productName = Flow;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		C341FF3329BF5222005A87C1 /* Example4.xcdatamodeld */ = {
