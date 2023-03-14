@@ -43,6 +43,11 @@ struct SizeExample: View {
   private var colorsFetchRequest: FetchedResults<Sku>
   
   private func submit() {
+    // 判断输入是否为空或已存在
+    guard !name.isEmpty, !colors222.contains(where: { $0.sizeArray!.contains(name) == true }) else {
+      showingAlert = true
+      return
+    }
     // 添加进来
     let newColor = Sku(context: viewContext)
     newColor.sizeArray = [name]
@@ -106,8 +111,8 @@ struct SizeExample: View {
   @State private var deletingIndex: Int?
   
   private func deleteColor(at index: Int) {
-    if let sizeToDelete = colors[index].sizeArray.first {
-      let color = colors.first(where: { $0.sizeArray.contains(sizeToDelete) == true })!
+    if let sizeToDelete = colors[index].sizeArray!.first {
+      let color = colors.first(where: { $0.sizeArray!.contains(sizeToDelete) == true })!
       viewContext.delete(color)
       do {
         try viewContext.save()
@@ -120,101 +125,97 @@ struct SizeExample: View {
   @ViewBuilder
   private func content() -> some View {
     HFlow(itemSpacing: 10, rowSpacing: 10) {
-      // 循环显示
-//      let sizes = Array(Set(colors.compactMap { $0.sizeClothes }.flatMap { $0 }))
-
-      ForEach(colors.indices, id: \.self) { colorEntiy in
-        if let sizeClothes: [String]? = colors[colorEntiy].sizeArray {
-          ForEach(sizeClothes ?? [], id: \.self) { size in
-            Text(size)
-              .foregroundColor(.black)
-              .padding()
-              .frame(height: 30)
-              .contentShape(Rectangle())
-              .overlay(
-                ZStack(alignment: .bottomTrailing) {
-                  GeometryReader { geometry in
-                    Color.clear
-                      .preference(key: TextExWidthKey.self, value: geometry.size.width)
-                  }
-                  
-                  if selectedColors.contains(size) {
-                    ZStack {
-                      // 打勾时，出现红色圆圈
-                      Circle()
-                        .foregroundColor(.orange)
-                        .frame(height: 10)
-
-                      // 让image出现在红色圆圈上面
-                      Image(systemName: "checkmark")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .frame(width: 8, height: 6)
-
-                    }.offset(x: 0, y: 0)
-                  } else {
-                    //                Image(systemName: "square")
-                    //                  .foregroundColor(.black)
-                  }
-                  
-                  //              Text(color.colors)
-                  //                .foregroundColor(.black)
-                  
-                  RoundedRectangle(cornerRadius: 4)
-                  
-                    .strokeBorder(selectedColors.contains(size) ? Color.red : Color.black, style: StrokeStyle(lineWidth: 1))
-                    .opacity(0.5)
-                }
-              )
-              // 把选中的勾宽度随着文字宽度放在右下角
-            
-              .contentShape(Rectangle())
-            
-              .onAppear {
-                // 清空选中的状态
-                print("content：生命周期初始化")
-                //            selectedColors.removeAll()
+      // 按字母顺序对唯一尺码进行排序
+      let uniqueColors = Array(Set(colors.flatMap { $0.sizeArray ?? [] })).sorted()
+      
+      ForEach(uniqueColors, id: \.self) { size in
+        Text(size)
+          .foregroundColor(.black)
+          .padding()
+          .frame(height: 30)
+          .contentShape(Rectangle())
+          .overlay(
+            ZStack(alignment: .bottomTrailing) {
+              GeometryReader { geometry in
+                Color.clear
+                  .preference(key: TextExWidthKey.self, value: geometry.size.width)
               }
-              .onTapGesture {
-                // 如果已经被选择，则从selectedColors数组中删除它；否则，将其添加到数组中
-                if selectedColors.contains(size) {
-                  selectedColors.removeAll(where: { $0 == size })
+              
+              if selectedColors.contains(size) {
+                ZStack {
+                  // 打勾时，出现红色圆圈
+                  Circle()
+                    .foregroundColor(.orange)
+                    .frame(height: 10)
 
-                  //              color.isSelected = false
-                } else {
-                  selectedColors.append(size)
-                  //              color.isSelected = true
-                }
-                do {
-                  try viewContext.save()
-                } catch {
-                  print("Error saving color: \(error.localizedDescription)")
-                }
+                  // 让image出现在红色圆圈上面
+                  Image(systemName: "checkmark")
+                    .resizable()
+                    .foregroundColor(.white)
+                    .frame(width: 8, height: 6)
+
+                }.offset(x: 0, y: 0)
+              } else {
+                //                Image(systemName: "square")
+                //                  .foregroundColor(.black)
               }
-            
-              //         长按弹出提示删除框
-              .onLongPressGesture {
-                if let color = colors.first(where: { $0.sizeArray.contains(size) == true }) {
-                  deleteIndex = colors.firstIndex(of: color)
-                  deleteAlert = true
-                }
-              }
-            
-              .alert(isPresented: $deleteAlert) {
-                let sizeToDelete = colors[deleteIndex!].sizeArray.first!
-                return Alert(
-                  title: Text("确定要删除 \(sizeToDelete) 吗？"),
-                  primaryButton: .destructive(Text("删除"), action: {
-                    // 调用删除操作函数来删除选定的颜色
-                    deleteColor(at: deleteIndex!)
-                  }),
-                  secondaryButton: .cancel(Text("取消"))
-                )
-              }
-          }
-        }
+              
+              //              Text(color.colors)
+              //                .foregroundColor(.black)
+              
+              RoundedRectangle(cornerRadius: 4)
+              
+                .strokeBorder(selectedColors.contains(size) ? Color.red : Color.black, style: StrokeStyle(lineWidth: 1))
+                .opacity(0.5)
+            }
+          )
+          // 把选中的勾宽度随着文字宽度放在右下角
         
-        //        let isSelected = selectedColors.contains(color.colors)
+          .contentShape(Rectangle())
+        
+          .onAppear {
+            // 清空选中的状态
+            print("content：生命周期初始化")
+            //            selectedColors.removeAll()
+          }
+          .onTapGesture {
+            // 如果已经被选择，则从selectedColors数组中删除它；否则，将其添加到数组中
+            if selectedColors.contains(size) {
+              selectedColors.removeAll(where: { $0 == size })
+
+              //              color.isSelected = false
+            } else {
+              selectedColors.append(size)
+              //              color.isSelected = true
+            }
+            do {
+              try viewContext.save()
+            } catch {
+              print("Error saving color: \(error.localizedDescription)")
+            }
+          }
+        
+          //         长按弹出提示删除框
+          .onLongPressGesture {
+            if let color = colors.first(where: { $0.sizeArray!.contains(size) == true }) {
+              deleteIndex = colors.firstIndex(of: color)
+              deleteAlert = true
+            }
+          }
+        
+          .alert(isPresented: $deleteAlert) {
+            let sizeToDelete = colors[deleteIndex!].sizeArray!.first!
+            return Alert(
+              title: Text("确定要删除 \(sizeToDelete) 吗？"),
+              primaryButton: .destructive(Text("删除"), action: {
+                // 调用删除操作函数来删除选定的颜色
+                deleteColor(at: deleteIndex!)
+              }),
+              secondaryButton: .cancel(Text("取消"))
+            )
+          }
+          
+        
       }
       
       Text("新增尺码")

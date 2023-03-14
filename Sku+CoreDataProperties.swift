@@ -18,11 +18,17 @@ public extension Sku {
   @NSManaged var price: Double
   @NSManaged var size: String?
   @NSManaged var sizes: [String]
-  @NSManaged var colorArray: [String]
-  @NSManaged var sizeArray: [String]
+  @NSManaged var colorArray: [String]?
+  @NSManaged var sizeArray: [String]?
   @NSManaged var stock: Int16
   @NSManaged var spu: Spu?
   @NSManaged var createdAt: Date
+
+  func removeFromColorArray(_ size: String) {
+    if let index = colorArray!.firstIndex(of: size) {
+      colorArray!.remove(at: index)
+    }
+  }
 
 //  internal func addSize(_ size: String) {
 //    if sizes == nil {

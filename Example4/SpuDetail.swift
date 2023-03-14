@@ -9,28 +9,86 @@ struct SpuDetail: View {
   @State private var showAddSkuSheet = false
 
   var body: some View {
-    List {
-      Section(header: Text("商品信息")) {
+    VStack {
+      VStack {
+        Text("商品信息")
         HStack {
           Text("名称")
           Spacer()
           Text(spu.name ?? "")
         }
       }
-
-      Section(header: Text("商品SKU")) {
+    }
+    VStack {
+      Text("商品SKU")
+      VStack {
         ForEach(spu.skus?.allObjects as? [Sku] ?? []) { sku in
           VStack(alignment: .leading) {
 //              Text("\(sku.color ?? "") \(sku.size ?? "")")
-            Text("\(sku.colorArray.map { "\($0)" }.joined(separator: ", ")) \(sku.sizeArray.map { "\($0)" }.joined(separator: ", "))")
+            VStack {
+              Text("颜色")
+                .font(.caption)
+                .foregroundColor(.black)
+              HStack {
+                ForEach(sku.colorArray ?? [], id: \.self) { size in
+                  Text("\(size)")
+                    .padding(.bottom, 4) // 添加底部间距
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+              }
+//              Text("\(sku.colorArray.map { "\($0)" }.joined(separator: " "))")
+            }
 
-            Text("库存: \(sku.stock)")
-              .font(.caption)
-              .foregroundColor(.secondary)
+            VStack {
+              HStack {
+                Color.clear.overlay {
+                  Text("尺码")
+                    .font(.caption)
+                    .foregroundColor(.black)
+                }
+                Color.clear.overlay {
+                  Text("库存")
+                    .font(.caption)
+                    .foregroundColor(.black)
+                }
+                Color.clear.overlay {
+                  Text("尺码")
+                    .font(.caption)
+                    .foregroundColor(.black)
+                }
+              }
+              .frame(height: 30)
+
+              Divider()
+
+              HStack {
+                Color.clear.overlay {
+                  VStack {
+                    ForEach(sku.sizeArray ?? [], id: \.self) { size in
+                      Text("\(size)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.bottom, 4) // 添加底部间距
+                    }
+                  }
+                }
+                Color.clear.overlay {
+                  VStack {
+                    Text("\(sku.stock)")
+                      .font(.caption)
+                      .foregroundColor(.black)
+                  }
+                }
+                Color.clear
+              }
+              .frame(height: 30)
+              Divider()
+            }
           }
 //          NavigationLink(destination: SkuDetailView(sku: sku)) {
 //            VStack(alignment: .leading) {
-////              Text("\(sku.color ?? "") \(sku.size ?? "")")
+          ////              Text("\(sku.color ?? "") \(sku.size ?? "")")
 //              Text("\(sku.colorArray.map { "\($0)" }.joined(separator: ", ")) \(sku.size ?? "")")
 //
 //              Text("库存: \(sku.stock)")
@@ -60,6 +118,7 @@ struct SpuDetail: View {
         }
       }
     }
+
 //    .onDisappear {
 //      try? viewContext.save()
 //    }
@@ -96,7 +155,7 @@ struct AddSkuSheet: View {
         VStack(spacing: 10) {
 //          TextField("颜色", text: $color)
           formColorView().frame(height: 20)
-          
+
           Divider()
           formSizeView().frame(height: 20)
           Divider()
@@ -119,19 +178,12 @@ struct AddSkuSheet: View {
           presentationMode.wrappedValue.dismiss()
         },
         trailing: Button("保存") {
-          // 判断输入是否为空或已存在
-          if selectedColors.isEmpty || selectedSizes.isEmpty || price.isEmpty || stock.isEmpty {
-            return
-          }
-
-          
-          
           let newSku = Sku(context: viewContext)
 //          newSku.color = color
 //          newSku.size = size
           newSku.colorArray = selectedColors
           newSku.sizeArray = selectedSizes
-          
+
           newSku.price = Double(price) ?? 0
           newSku.stock = Int16(stock) ?? 0
           newSku.spu = spu
@@ -201,8 +253,6 @@ struct AddSkuSheet: View {
         .presentationCornerRadius(20)
         .presentationContentInteraction(.scrolls)
     }
-
-    
   }
 
   @ViewBuilder

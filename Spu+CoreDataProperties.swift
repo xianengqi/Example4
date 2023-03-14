@@ -51,8 +51,27 @@ extension Spu {
     }
     return totalStock
   }
-  
-  
+}
 
- 
+
+extension Spu {
+  var colorStocks: [String: Int] {
+    var stocks: [String: Int] = [:]
+
+    if let skus = skus?.allObjects as? [Sku] {
+      for sku in skus {
+        if let colors = sku.colorArray {
+          for color in colors {
+            if let stock = stocks[color] {
+              stocks[color] = stock + Int(sku.stock)
+            } else {
+              stocks[color] = Int(sku.stock)
+            }
+          }
+        }
+      }
+    }
+
+    return stocks
+  }
 }
